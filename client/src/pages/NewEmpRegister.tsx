@@ -7,9 +7,10 @@ import type {
   Manager,
   ValidationErrors,
 } from "../types/employee";
-import PersonalInfoSection from "../components/formSections/personalInfoSection";
+import PersonalInfoSection from "../components/formSections/PersonalInfoSection";
 import JobDetailsSection from "../components/formSections/JobDetail";
 import ProfilePhotoSection from "../components/formSections/ProfilePhotoSection";
+import { GetDepartment_API } from "../action/DeptApi";
 
 const NewEmpRegister = () => {
   const [formData, setFormData] = useState<EmployeeFormData>({
@@ -19,7 +20,6 @@ const NewEmpRegister = () => {
     joiningDate: "",
     profile: null,
     role: "",
-    managerId: "",
     salary: "",
   });
 
@@ -28,32 +28,6 @@ const NewEmpRegister = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [managers, setManagers] = useState<Manager[]>([]);
   const [isLoadingManagers, setIsLoadingManagers] = useState(false);
-
-  useEffect(() => {
-    const fetchManagers = async () => {
-      setManagers([
-        { id: "1", name: "John Smith" },
-        { id: "2", name: "Sarah Johnson" },
-        { id: "3", name: "Michael Brown" },
-      ]);
-      // setIsLoadingManagers(true);
-      // try {
-      //   const response = await axios.get("/api/managers");
-      //   setManagers(response.data);
-      // } catch (error) {
-      //   console.error("Error fetching managers:", error);
-      //   setManagers([
-      //     { id: "1", name: "John Smith" },
-      //     { id: "2", name: "Sarah Johnson" },
-      //     { id: "3", name: "Michael Brown" },
-      //   ]);
-      // } finally {
-      //   setIsLoadingManagers(false);
-      // }
-    };
-
-    fetchManagers();
-  }, []);
 
   const validateForm = () => {
     const newErrors: ValidationErrors = {};
@@ -86,9 +60,9 @@ const NewEmpRegister = () => {
       newErrors.role = "Role is required";
     }
 
-    if (formData.role && formData.role !== "Manager" && !formData.managerId) {
-      newErrors.managerId = "Manager is required for non-manager roles";
-    }
+    // if (formData.role && formData.role !== "Manager" && !formData.managerId) {
+    //   newErrors.managerId = "Manager is required for non-manager roles";
+    // }
 
     if (!formData.salary) {
       newErrors.salary = "Salary is required";
@@ -106,12 +80,7 @@ const NewEmpRegister = () => {
   const handleFormChange = (field: string, value: string) => {
     setFormData((prev) => {
       const newFormData = { ...prev, [field]: value };
-
-      // Reset manager selection when role changes to Manager
-      if (field === "role" && value === "Manager") {
-        newFormData.managerId = "";
-      }
-
+      
       return newFormData;
     });
 
@@ -128,8 +97,9 @@ const NewEmpRegister = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log(formData);
     if (!validateForm()) {
+      console.log("validation Error");
       return;
     }
 
@@ -144,7 +114,6 @@ const NewEmpRegister = () => {
         joiningDate: "",
         profile: null,
         role: "",
-        managerId: "",
         salary: "",
       });
       setPreviewUrl(null);
@@ -157,6 +126,22 @@ const NewEmpRegister = () => {
     }
   };
 
+  useEffect(() => {
+    const getDepartments = async () => {
+      setIsLoadingManagers(true);
+      try {
+        const res = await GetDepartment_API();
+        if (res.success) {
+          setManagers(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoadingManagers(false);
+      }
+    };
+    getDepartments();
+  }, []);
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
       <Paper sx={{ p: 3 }}>

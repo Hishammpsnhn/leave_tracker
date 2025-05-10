@@ -1,22 +1,41 @@
+import { useEffect, useState } from "react";
+import { GetEmployee_API } from "../action/AdminApi";
 import { GenericTable, type Column } from "../components/GenericTable";
 import NumCard from "../components/NumCard";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Typography } from "@mui/material";
 type User = {
-  name: string;
-  age: number;
+  firstName: string;
+  lastName: string;
   email: string;
+  deptId: {
+    name: string;
+    manager: string;
+  };
 };
 const AdminHomePage = () => {
+  const [employees, setEmployees] = useState<User[]>([]);
   const columns: Column<User>[] = [
-    { id: "name", label: "Name" },
-    { id: "age", label: "Age" },
+    { id: "firstName", label: "Name" },
     { id: "email", label: "Email" },
+    {
+      id: "deptId",
+      label: "Department",
+      render: (_value, row) => row.deptId?.name ?? "-",
+    },
   ];
 
-  const rows: User[] = [
-    { name: "Alice", age: 30, email: "alice@example.com" },
-    { name: "Bob", age: 25, email: "bob@example.com" },
-  ];
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const res = await GetEmployee_API('emp');
+        setEmployees(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getUser();
+  }, []);
+
   return (
     <Box p={2} sx={{ flexGrow: 1 }}>
       <Grid
@@ -35,7 +54,13 @@ const AdminHomePage = () => {
           <NumCard heading="Leaves Today" count={2} />
         </Grid>
       </Grid>
-      <GenericTable<User> columns={columns} rows={rows} />
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Box width={'100%'}>
+          <Typography variant="h6" fontWeight={600}>Employees</Typography>
+          <GenericTable<User> columns={columns} rows={employees} />
+        </Box>
+
+      </Box>
     </Box>
   );
 };

@@ -3,7 +3,14 @@ import adminController from "../controller/adminController";
 
 const router = Router();
 
-router.route("/users").post(adminController.createEmp);
+router
+  .route("/users")
+  .get(adminController.getEmployees)
+  .post(adminController.createEmp);
+router
+  .route("/dept")
+  .get(adminController.getDepartment)
+  .post(adminController.createDepartment);
 // router.route("/users").get(AuthController.login).post(AuthController.login);
 
 // router

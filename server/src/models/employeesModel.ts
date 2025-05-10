@@ -9,7 +9,7 @@ export interface IUser extends Document {
   password: string;
   joiningDate: Date;
   role: UserRole;
-  managerId?: string;
+  deptId?: mongoose.Types.ObjectId;
   salary: number;
 }
 
@@ -19,7 +19,7 @@ const EmpModel: Schema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   joiningDate: { type: Date, required: true },
-  managerId: { type: String, ref: "Employee", default: null },
+  deptId: { type:Schema.Types.ObjectId , ref: "Department"},
   role: { type: String, enum: ["admin", "emp", "manager"], required: true },
   salary: { type: Number, required: true },
 });

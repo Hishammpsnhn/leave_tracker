@@ -15,7 +15,6 @@ export interface EmpDetails {
 
 export interface EmployeeFormData extends EmpDetails {
   role: string;
-  managerId: string;
   salary: string;
 }
 

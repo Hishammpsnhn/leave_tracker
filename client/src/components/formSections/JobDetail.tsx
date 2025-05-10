@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import type { EmployeeFormData, Manager, ValidationErrors } from '../../types/employee';
 
-// Define available roles in the company
-const ROLES = ["Manager", "Developer", "Designer", "HR", "Marketing", "Sales", "Finance", "Other"];
+// // Define available roles in the company
+// const ROLES = ["Manager", "Developer", "Designer", "HR", "Marketing", "Sales", "Finance", "Other"];
 
 interface JobDetailsSectionProps {
   formData: EmployeeFormData;
@@ -52,12 +52,12 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({
             id="role"
             name="role"
             value={formData.role}
-            label="Role in Company"
+            label="Department"
             onChange={handleSelectChange as any}
           >
-            {ROLES.map((role) => (
-              <MenuItem key={role} value={role}>
-                {role}
+            {managers.map((role) => (
+              <MenuItem key={role.id} value={role.name}>
+                {role.name.toUpperCase()}
               </MenuItem>
             ))}
           </Select>
@@ -81,28 +81,7 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({
         />
       </Box>
 
-      {/* Manager Selection (only if role is not Manager) */}
-      {formData.role && formData.role !== "Manager" && (
-        <FormControl fullWidth error={!!errors.managerId} required>
-          <InputLabel id="manager-label">Manager</InputLabel>
-          <Select
-            labelId="manager-label"
-            id="managerId"
-            name="managerId"
-            value={formData.managerId}
-            label="Manager"
-            onChange={handleSelectChange as any}
-            disabled={isLoadingManagers}
-          >
-            {managers.map((manager) => (
-              <MenuItem key={manager.id} value={manager.id}>
-                {manager.name}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.managerId && <FormHelperText>{errors.managerId}</FormHelperText>}
-        </FormControl>
-      )}
+    
     </>
   );
 };
