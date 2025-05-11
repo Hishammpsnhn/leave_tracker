@@ -4,6 +4,7 @@ import AttendanceModel, {
 } from "../models/attendance";
 import { startOfDay } from "date-fns";
 import { convertUTCToLocalDateOnly } from "../utils/UtlToLocal";
+import { UpdateResult } from "mongoose";
 
 class AttendanceRepository {
   public async getAll(empId: string): Promise<IAttendance[]> {
@@ -66,6 +67,22 @@ class AttendanceRepository {
     );
 
     return attendance;
+  }
+  public async getForApproval(): Promise<IAttendance[]> {
+    return AttendanceModel.find({
+      isEdited: false,
+      status: "Pending",
+    });
+  }
+  public async updateMany(
+    ids: string[],
+    status: string,
+    userId:string
+  ):Promise<UpdateResult>  {
+    return AttendanceModel.updateMany(
+      { _id: { $in: ids }, status: "Pending" },
+      { $set: { status,editApprovedBy:userId } },
+    );
   }
 }
 

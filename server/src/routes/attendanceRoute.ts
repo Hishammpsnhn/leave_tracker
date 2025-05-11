@@ -23,6 +23,5 @@ router
     authorizeRoles(UserRole.EMPLOYEE),
     attendanceController.getAllAttendance
   )
-  
 
 export default router;

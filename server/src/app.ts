@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./routes/authRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import attendanceRoutes from "./routes/attendanceRoute";
+import managerRoutes from "./routes/managerRoutes";
 import cors from "cors";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/emp", attendanceRoutes);
+app.use("/api/manager", managerRoutes);
 // app.use(errorHandler);
 
 export default app;
