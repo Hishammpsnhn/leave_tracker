@@ -5,7 +5,7 @@ export interface AttendanceDTO<T> {
   loginTime?: T;  
   logoutTime?: T;
   isLate?: T;
-  Reason?: T;
+  reason?: T;
   isEdited?: T;
   editRequestedBy?: T;
   editApprovedBy?: T;
@@ -19,7 +19,7 @@ export interface IAttendance extends Document {
   loginTime: string;         
   logoutTime?: string;        
   isLate: boolean;
-  Reason?: string;
+  reason?: string;
   isEdited: boolean;
   editRequestedBy?: mongoose.Types.ObjectId;
   editApprovedBy?: mongoose.Types.ObjectId;
@@ -51,7 +51,7 @@ const AttendanceSchema = new Schema<IAttendance>(
       type: Boolean,
       default: false
     },
-    Reason: {
+    reason: {
       type: String,
       default: null
     },

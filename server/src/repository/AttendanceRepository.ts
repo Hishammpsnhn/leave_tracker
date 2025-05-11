@@ -7,7 +7,7 @@ import { convertUTCToLocalDateOnly } from "../utils/UtlToLocal";
 
 class AttendanceRepository {
   public async getAll(empId: string): Promise<IAttendance[]> {
-    return AttendanceModel.find({ employeeId: empId });
+    return AttendanceModel.find({ employeeId: empId }).limit(5);
   }
   public async findToday(empId: string): Promise<IAttendance | null> {
     const todayStart = startOfDay(new Date());

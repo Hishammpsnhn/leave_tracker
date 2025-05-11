@@ -17,5 +17,12 @@ router
     authorizeRoles(UserRole.EMPLOYEE),
     attendanceController.updateAttendance
   );
+router
+  .route("/attendance_list")
+  .get(
+    authorizeRoles(UserRole.EMPLOYEE),
+    attendanceController.getAllAttendance
+  )
+  
 
 export default router;
