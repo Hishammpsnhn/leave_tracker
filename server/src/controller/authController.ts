@@ -12,7 +12,7 @@ class AuthController {
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
-    const token = generateToken(user.id);
+    const token = generateToken(user.id,user.role);
     res.status(200).json({ success: true, token, user });
   }
 }

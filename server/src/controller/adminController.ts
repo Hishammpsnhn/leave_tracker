@@ -15,8 +15,7 @@ class adminController {
       res.status(401).json({ message: "Invalid credentials" });
       return;
     }
-    const token = generateToken(user.id);
-    res.json({ token });
+    res.status(201).json({ success:true,user });
   }
 
   public async createDepartment(req: Request, res: Response): Promise<void> {

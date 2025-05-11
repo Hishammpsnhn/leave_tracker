@@ -7,7 +7,6 @@ import { UserRole } from "../constants/userRoles";
 
 class AdminService {
   public async createEmployee(EmpDetails: IUser): Promise<IUser | null> {
-    //check role is manager
     if (EmpDetails.role !== UserRole.MANAGER) {
       const dept = await deptRepository.findOne(EmpDetails.role);
       if (!dept || !dept._id) {
@@ -15,7 +14,6 @@ class AdminService {
       }
       EmpDetails.role = UserRole.EMPLOYEE;
       EmpDetails.deptId = dept?.id;
-      //get dept id
     }
 
     const user = await userRepository.create(EmpDetails);
