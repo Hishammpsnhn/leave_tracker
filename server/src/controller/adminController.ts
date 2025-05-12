@@ -3,47 +3,67 @@ import adminService from "../services/adminService";
 import { generateToken } from "../utils/jwt";
 import { UserRole } from "../constants/userRoles";
 
-class adminController {
+class AdminController {
   public async createEmp(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
-    const user = await adminService.createEmployee({
-      ...req.body,
-      password: req.body.joiningDate,
-    });
+    try {
+      console.log(req.body);
 
-    if (!user) {
-      res.status(401).json({ message: "Invalid credentials" });
-      return;
+      const user = await adminService.createEmployee({
+        ...req.body,
+        password: req.body.joiningDate, 
+      });
+
+      if (!user) {
+        res.status(400).json({ message: "Employee creation failed" });
+        return;
+      }
+
+      res.status(201).json({ success: true, user });
+    } catch (error) {
+      console.error("Create employee error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-    res.status(201).json({ success:true,user });
   }
 
   public async createDepartment(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
-    const dept = await adminService.createDept(req.body);
+    try {
+      console.log(req.body);
 
-    if (!dept) {
-      res.status(401).json({ message: "Invalid credentials" });
-      return;
+      const dept = await adminService.createDept(req.body);
+
+      if (!dept) {
+        res.status(400).json({ message: "Department creation failed" });
+        return;
+      }
+
+      res.status(201).json({ success: true, dept });
+    } catch (error) {
+      console.error("Create department error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-    res.status(201).json({ success: true, dept });
   }
 
   public async getDepartment(req: Request, res: Response): Promise<void> {
-    const dept = await adminService.getDept();
+    try {
+      const dept = await adminService.getDept();
 
-    if (!dept) {
-      res.status(401).json({ message: "Invalid credentials" });
-      return;
+      res.status(200).json({ success: true, data: dept });
+    } catch (error) {
+      console.error("Get departments error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-    res.status(200).json({ success: true, data: dept });
   }
-  public async getEmployees(req: Request, res: Response): Promise<void> {
-    const query = req.query.role
-    const employees = await adminService.getEmployee(query as string);
 
-    res.status(200).json({ success: true, data: employees });
+  public async getEmployees(req: Request, res: Response): Promise<void> {
+    try {
+      const query = req.query.role;
+      const employees = await adminService.getEmployee(query as string);
+      res.status(200).json({ success: true, data: employees });
+    } catch (error) {
+      console.error("Get employees error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 }
 
-export default new adminController();
+export default new AdminController();

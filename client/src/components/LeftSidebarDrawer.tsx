@@ -34,7 +34,7 @@ export default function LeftSidebarDrawer() {
   const managerRoute = [
     { text: "Dashboard", path: "/manager/dashboard" },
     { text: "Attendance", path: "/manager/attendance" },
-    { text: "Department", path: "/manager/department" },
+    { text: "Leave Tracking", path: "/manager/leave" },
   ];
 
   const list = () => (
@@ -56,7 +56,7 @@ export default function LeftSidebarDrawer() {
           fontWeight: "bold",
         }}
       >
-        Admin Dashboard
+        {user?.role === "manager" ? "Manager" : "Admin"} Dashboard
       </Typography>
 
       <List>

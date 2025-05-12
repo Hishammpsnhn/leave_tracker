@@ -1,22 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Profile from "../components/employee/Profile";
 import Attendance from "../components/employee/Attendance";
 import {
   Box,
-  Grid,
   Container,
   Typography,
   Paper,
   Tabs,
   Tab,
   Divider,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  Alert,
 } from "@mui/material";
 import AttendanceListCard from "../components/employee/AttendanceListCard";
 import {
@@ -26,6 +18,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import type { AttendanceData } from "../types/attendance";
 import EditDialog from "../components/employee/AttendanceEditDialog/EditDialog";
+import LeaveSection from "../components/employee/LeaveSection";
 
 const EmpHome = () => {
   const { user } = useAuth();
@@ -57,8 +50,8 @@ const EmpHome = () => {
       _id: selectedRecord,
       reason: editReason,
       editRequestedBy: user?._id,
-      isEdited:false,
-      status:'Pending'
+      isEdited: false,
+      status: "Pending",
     });
     handleCloseEditDialog();
     setAttendanceList((prev) =>
@@ -117,6 +110,7 @@ const EmpHome = () => {
             {tabValue === 0 && (
               <Box>
                 <Attendance />
+                <LeaveSection />
               </Box>
             )}
 

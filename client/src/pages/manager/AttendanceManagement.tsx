@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {  BulkUpdateAttendance_API, GetAttendanceForEdit_API } from "../../action/AttendanceApi";
 import type { AttendanceData } from "../../types/attendance";
+import { GetLeaveRequest_API } from "../../action/LeaveApi";
 
 
 
@@ -50,6 +51,8 @@ const AttendanceManagement: React.FC = () => {
   useEffect(() => {
     const fetchAttendance =async () => {
       try {
+        const res1 = await GetLeaveRequest_API()
+        
         const res = await GetAttendanceForEdit_API();
         if(res.attendance){
           setRequests(res.attendance)
