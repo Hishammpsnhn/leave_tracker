@@ -2,6 +2,10 @@
 
 A full-stack Leave & Attendance Tracking System built with **Node.js (TypeScript)**, **React (TypeScript)**, **Express**, and **MongoDB**. The application supports three user roles: **Admin**, **Manager**, and **Employee**, each with distinct capabilities. Designed for companies to efficiently manage attendance, leave requests, departmental schedules, and communication.
 
+## 🖼️ Screenshots
+
+👉 [View Screenshots](https://drive.google.com/drive/folders/1uSEx0F0205h5hILSeT0aV2HR8KGOrshz?usp=drive_link)
+
 ## 🚀 Features
 
 ### 🔒 Authentication
