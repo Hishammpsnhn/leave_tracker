@@ -15,7 +15,10 @@ export interface AttendanceEntry<T> {
 export type AttendanceData = {
   _id: string;
   date: string;
-  employeeId: string;
+  employeeId: {
+    _id:string,
+    firstName:string,
+  };
   reason: string | null;
   createdAt: string;
   editApprovedBy: string | null;

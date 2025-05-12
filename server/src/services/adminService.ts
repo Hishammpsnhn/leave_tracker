@@ -39,6 +39,10 @@ class AdminService {
     const employee = await userRepository.findAll(query);
     return employee;
   }
+  public async getDashboardStats() {
+    const employee = await userRepository.getDashboardStats();
+    return employee;
+  }
 }
 
 export default new AdminService();

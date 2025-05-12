@@ -8,15 +8,12 @@ router
   .get(adminController.getEmployees)
   .post(adminController.createEmp);
 router
+  .route("/dashboard")
+  .get(adminController.getDashboardStats)
+router
   .route("/dept")
   .get(adminController.getDepartment)
   .post(adminController.createDepartment);
-// router.route("/users").get(AuthController.login).post(AuthController.login);
 
-// router
-//   .route("/users/:id")
-//   .post(AuthController.login)
-//   .put(AuthController.login)
-//   .delete(AuthController.login);
 
 export default router;

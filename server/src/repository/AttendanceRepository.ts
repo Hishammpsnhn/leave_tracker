@@ -73,11 +73,12 @@ class AttendanceRepository {
     deptId: mongoose.Types.ObjectId
   ): Promise<IAttendance[]> {
     console.log(deptId)
-    return AttendanceModel.find({
+    const data =  AttendanceModel.find({
       departmentId: deptId,
       isEdited: false,
       status: "Pending",
-    });
+    }).populate("employeeId","firstName")
+    return data;
   }
   public async updateMany(
     ids: string[],

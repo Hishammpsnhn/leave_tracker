@@ -18,7 +18,7 @@ class LeaveRequestRepository {
     const request = await LeaveModel.find({
       deptId,
       status: "Pending",
-    });
+    }).populate('empId',"firstName")
     return request;
   }
   public async update(

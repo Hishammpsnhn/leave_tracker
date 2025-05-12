@@ -115,7 +115,7 @@ const AttendanceManagement: React.FC = () => {
                     />
                   )}
                   <Box>
-                    <Typography variant="h6">{request.employeeId}</Typography>
+                    <Typography variant="h6">{request.employeeId.firstName}</Typography>
                     <Typography color="textSecondary">
                       Date: {new Date(request.date).toLocaleDateString()}
                     </Typography>

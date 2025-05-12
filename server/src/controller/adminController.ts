@@ -64,6 +64,15 @@ class AdminController {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
+  public async getDashboardStats(req: Request, res: Response): Promise<void> {
+    try {
+      const data = await adminService.getDashboardStats();
+      res.status(200).json({ success: true, data });
+    } catch (error) {
+      console.error("Get employees error:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
 }
 
 export default new AdminController();

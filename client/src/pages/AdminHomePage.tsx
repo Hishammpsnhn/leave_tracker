@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetEmployee_API } from "../action/AdminApi";
+import { GetDashboard_API, GetEmployee_API } from "../action/AdminApi";
 import { GenericTable, type Column } from "../components/GenericTable";
 import NumCard from "../components/NumCard";
 import { Grid, Box, Typography } from "@mui/material";
@@ -14,6 +14,7 @@ type User = {
 };
 const AdminHomePage = () => {
   const [employees, setEmployees] = useState<User[]>([]);
+  const [dashboardStats, setDashboardStats] = useState<any>();
   const columns: Column<User>[] = [
     { id: "firstName", label: "Name" },
     { id: "email", label: "Email" },
@@ -25,15 +26,29 @@ const AdminHomePage = () => {
   ];
 
   useEffect(() => {
-    async function getUser() {
+    const fetchDashboardData = async () => {
       try {
-        const res = await GetEmployee_API('emp');
-        setEmployees(res.data);
+        const response = await GetDashboard_API();
+        if (response.data) {
+          setDashboardStats(response.data);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching dashboard stats:", error);
       }
-    }
-    getUser();
+    };
+
+    const fetchEmployees = async () => {
+      try {
+        const response = await GetEmployee_API("emp");
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+
+    (async () => {
+      await Promise.all([fetchDashboardData(), fetchEmployees()]);
+    })();
   }, []);
 
   return (
@@ -45,21 +60,28 @@ const AdminHomePage = () => {
         marginBottom={5}
       >
         <Grid size={{ xs: 2, sm: 4, md: 4 }}>
-          <NumCard heading="Total Employees" count={30} />
+          <NumCard
+            heading="Total Employees"
+            count={dashboardStats?.totalEmployees}
+          />
         </Grid>
         <Grid size={{ xs: 2, sm: 4, md: 4 }}>
-          <NumCard heading="Attendance" count={28} />
+          <NumCard
+            heading="Total Departments"
+            count={dashboardStats?.totalDepartments}
+          />
         </Grid>
         <Grid size={{ xs: 2, sm: 4, md: 4 }}>
-          <NumCard heading="Leaves Today" count={2} />
+          <NumCard heading="Total Salary" count={dashboardStats?.totalSalary} />
         </Grid>
       </Grid>
       <Box sx={{ display: "flex", gap: 2 }}>
-        <Box width={'100%'}>
-          <Typography variant="h6" fontWeight={600}>Employees</Typography>
+        <Box width={"100%"}>
+          <Typography variant="h6" fontWeight={600}>
+            Employees
+          </Typography>
           <GenericTable<User> columns={columns} rows={employees} />
         </Box>
-
       </Box>
     </Box>
   );

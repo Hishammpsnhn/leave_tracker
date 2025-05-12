@@ -3,94 +3,88 @@ import {
   Drawer,
   Box,
   List,
-  Divider,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useNavigate, useLocation } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useAuth } from "../context/AuthContext";
 
 export default function LeftSidebarDrawer() {
   const { user } = useAuth();
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleListItemClick = (index: number, path: string) => {
-    setSelectedIndex(index);
+  const adminRoutes = React.useMemo(() => [
+    { text: "Dashboard", path: "/admin/dashboard", icon: <DashboardIcon /> },
+    { text: "New Employee", path: "/admin/new-employee", icon: <PersonAddIcon /> },
+    { text: "Department", path: "/admin/department", icon: <ApartmentIcon /> },
+  ], []);
+
+  const managerRoutes = React.useMemo(() => [
+    { text: "Dashboard", path: "/manager/dashboard", icon: <DashboardIcon /> },
+    { text: "Attendance", path: "/manager/attendance", icon: <AccessTimeIcon /> },
+    { text: "Leave Tracking", path: "/manager/leave", icon: <EventNoteIcon /> },
+  ], []);
+
+  const routes = user?.role === "manager" ? managerRoutes : adminRoutes;
+
+  const handleNavigation = (path: string) => {
     navigate(path);
   };
-  const adminRoute = [
-    { text: "Dashboard", path: "/admin/dashboard" },
-    { text: "New Employee", path: "/admin/new-employee" },
-    { text: "Department", path: "/admin/department" },
-    { text: "Send email", path: "/send-email" },
-    { text: "Drafts", path: "/drafts" },
-  ];
-  const managerRoute = [
-    { text: "Dashboard", path: "/manager/dashboard" },
-    { text: "Attendance", path: "/manager/attendance" },
-    { text: "Leave Tracking", path: "/manager/leave" },
-  ];
-
-  const list = () => (
-    <Box
-      sx={{
-        width: 250,
-        backgroundColor: "#19232c",
-        height: "100vh",
-        paddingTop: "16px",
-      }}
-      role="presentation"
-    >
-      <Typography
-        variant="h6"
-        sx={{
-          color: "white",
-          paddingLeft: "16px",
-          paddingBottom: "16px",
-          fontWeight: "bold",
-        }}
-      >
-        {user?.role === "manager" ? "Manager" : "Admin"} Dashboard
-      </Typography>
-
-      <List>
-        {(user?.role === "manager" ? managerRoute : adminRoute).map(
-          (item, index) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton
-                selected={selectedIndex === index}
-                onClick={() => handleListItemClick(index, item.path)}
-                sx={{
-                  backgroundColor:
-                    selectedIndex === index ? "#304252" : "transparent",
-                  "&:hover": {
-                    backgroundColor: "#304252",
-                  },
-                }}
-              >
-                <ListItemIcon
-                  sx={{ color: selectedIndex === index ? "white" : "blue" }}
-                >
-                  {index === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={item.text} sx={{ color: "white" }} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
-      </List>
-    </Box>
-  );
 
   return (
     <Drawer anchor="left" open={true} variant="persistent">
-      {list()}
+      <Box
+        sx={{
+          width: 250,
+          backgroundColor: "#19232c",
+          height: "100vh",
+          paddingTop: "16px",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+            paddingLeft: "16px",
+            paddingBottom: "16px",
+            fontWeight: "bold",
+          }}
+        >
+          {user?.role === "manager" ? "Manager" : "Admin"} Dashboard
+        </Typography>
+
+        <List>
+          {routes.map(({ text, path, icon }) => {
+            const isSelected = location.pathname === path;
+            return (
+              <ListItem key={text} disablePadding>
+                <ListItemButton
+                  selected={isSelected}
+                  onClick={() => handleNavigation(path)}
+                  sx={{
+                    backgroundColor: isSelected ? "#304252" : "transparent",
+                    "&:hover": { backgroundColor: "#304252" },
+                  }}
+                >
+                  <ListItemIcon sx={{ color: isSelected ? "white" : "blue" }}>
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ color: "white" }} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Box>
     </Drawer>
   );
 }

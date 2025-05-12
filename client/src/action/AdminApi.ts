@@ -21,3 +21,13 @@ export const GetEmployee_API = async (query:string) => {
     throw error;
   }
 };
+export const GetDashboard_API = async () => {
+
+  try {
+    const { data } = await apiClient.get(`/admin/dashboard`)
+    return data;
+  } catch (error: any) {
+    console.error("Login failed:", error?.response?.data || error.message);
+    throw error;
+  }
+};

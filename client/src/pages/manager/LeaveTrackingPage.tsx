@@ -62,7 +62,7 @@ const LeaveTracking: React.FC = () => {
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={2}>
                   <Box>
-                    <Typography variant="h6">{request.empId}</Typography>
+                    <Typography variant="h6">{request.empId?.firstName}</Typography>
                     <Typography color="textSecondary">
                       Date: {new Date(request.startDate).toLocaleDateString()}
                     </Typography>

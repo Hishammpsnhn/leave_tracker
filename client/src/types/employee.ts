@@ -48,7 +48,10 @@ export interface LeaveRequest {
   contactInfo: string;
   createdAt?: Date;
   status: "Pending" | "Approved" | "Rejected";
-  empId?: string;
+  empId?: {
+    _id:string,
+    firstName:string
+  };
 }
 export interface LeaveRequestFormData {
   leaveType: string;

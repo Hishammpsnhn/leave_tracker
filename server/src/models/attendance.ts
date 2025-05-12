@@ -34,12 +34,12 @@ const AttendanceSchema = new Schema<IAttendance>(
   {
     employeeId: {
       type: Schema.Types.ObjectId,
-      ref: "Department",
+      ref: "Employee",
       required: true,
     },
     departmentId: {
       type: Schema.Types.ObjectId,
-      ref: "Employee",
+      ref: "Department",
       required: true,
     },
     date: {
