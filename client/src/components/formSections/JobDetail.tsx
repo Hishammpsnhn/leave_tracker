@@ -30,7 +30,7 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({
   isLoadingManagers,
   onChange
 }) => {
-  
+  console.log(managers)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onChange(name, value);
@@ -57,7 +57,7 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({
           >
             {managers.map((role) => (
               <MenuItem key={role.id} value={role.name}>
-                {role.name.toUpperCase()}
+                {role.name?.toUpperCase()}
               </MenuItem>
             ))}
           </Select>

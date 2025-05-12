@@ -4,7 +4,8 @@ import AttendanceModel, {
 } from "../models/attendance";
 import { startOfDay } from "date-fns";
 import { convertUTCToLocalDateOnly } from "../utils/UtlToLocal";
-import { UpdateResult } from "mongoose";
+import mongoose, { ObjectId, UpdateResult } from "mongoose";
+import userRepository from "./userRepository";
 
 class AttendanceRepository {
   public async getAll(empId: string): Promise<IAttendance[]> {
@@ -68,8 +69,12 @@ class AttendanceRepository {
 
     return attendance;
   }
-  public async getForApproval(): Promise<IAttendance[]> {
+  public async getForApproval(
+    deptId: mongoose.Types.ObjectId
+  ): Promise<IAttendance[]> {
+    console.log(deptId)
     return AttendanceModel.find({
+      departmentId: deptId,
       isEdited: false,
       status: "Pending",
     });
@@ -77,11 +82,11 @@ class AttendanceRepository {
   public async updateMany(
     ids: string[],
     status: string,
-    userId:string
-  ):Promise<UpdateResult>  {
+    userId: string
+  ): Promise<UpdateResult> {
     return AttendanceModel.updateMany(
       { _id: { $in: ids }, status: "Pending" },
-      { $set: { status,editApprovedBy:userId } },
+      { $set: { status, editApprovedBy: userId } }
     );
   }
 }

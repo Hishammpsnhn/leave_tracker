@@ -2,7 +2,10 @@ import DeptModel, { Department } from "../models/deptModel";
 
 class DeptRepository {
   public async getAll(): Promise<Department[]> {
-    return DeptModel.find({}).populate('managerId','firstName');
+    return DeptModel.find({}).populate("managerId", "firstName");
+  }
+  public async getAllByManager(managerId: string): Promise<Department | null> {
+    return DeptModel.findOne({ managerId });
   }
   public async findOne(name: string): Promise<Department | null> {
     return DeptModel.findOne({ name });

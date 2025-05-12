@@ -46,7 +46,7 @@ class AttendanceController {
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
-    const attendance = await attendanceService.getAttendanceForApproval();
+    const attendance = await attendanceService.getAttendanceForApproval(req.user.userId);
     if (!attendance) {
       res.status(400).json({ message: "Attendance not Respond" });
       return;

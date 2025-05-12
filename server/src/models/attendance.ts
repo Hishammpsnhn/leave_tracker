@@ -1,8 +1,9 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import mongoose, { Document, Schema, Model, ObjectId } from "mongoose";
 export interface AttendanceDTO<T> {
   employeeId: string;
+  departmentId?: mongoose.Types.ObjectId;
   date?: string;
-  loginTime?: T;  
+  loginTime?: T;
   logoutTime?: T;
   isLate?: T;
   reason?: T;
@@ -15,15 +16,16 @@ export interface AttendanceDTO<T> {
 
 export interface IAttendance extends Document {
   employeeId: mongoose.Types.ObjectId;
+  departmentId: mongoose.Types.ObjectId;
   date: string;
-  loginTime: string;         
-  logoutTime?: string;        
+  loginTime: string;
+  logoutTime?: string;
   isLate: boolean;
   reason?: string;
   isEdited: boolean;
   editRequestedBy?: mongoose.Types.ObjectId;
   editApprovedBy?: mongoose.Types.ObjectId;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: "Pending" | "Approved" | "Rejected";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,54 +34,62 @@ const AttendanceSchema = new Schema<IAttendance>(
   {
     employeeId: {
       type: Schema.Types.ObjectId,
-      ref: 'Employee',
-      required: true
+      ref: "Department",
+      required: true,
+    },
+    departmentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Employee",
+      required: true,
     },
     date: {
       type: String,
-      required: true
+      required: true,
     },
     loginTime: {
       type: String,
-      required: true
+      required: true,
     },
     logoutTime: {
       type: String,
-      default:null
+      default: null,
     },
     isLate: {
       type: Boolean,
-      default: false
+      default: false,
     },
     reason: {
       type: String,
-      default: null
+      default: null,
     },
     isEdited: {
       type: Boolean,
-      default: false
+      default: false,
     },
     editRequestedBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Employee',
-      default: null
+      ref: "Employee",
+      default: null,
     },
     editApprovedBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Employee',
-      default: null
+      ref: "Employee",
+      default: null,
     },
     status: {
       type: String,
-      enum: ['Pending', 'Approved', 'Rejected'],
-      default: 'Pending'
-    }
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-const Attendance: Model<IAttendance> = mongoose.model<IAttendance>('Attendance', AttendanceSchema);
+const Attendance: Model<IAttendance> = mongoose.model<IAttendance>(
+  "Attendance",
+  AttendanceSchema
+);
 
 export default Attendance;

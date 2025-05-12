@@ -26,7 +26,9 @@ const NewEmpRegister = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [managers, setManagers] = useState<Manager[]>([]);
+  const [managers, setManagers] = useState<Manager[]>([
+  
+  ]);
   const [isLoadingManagers, setIsLoadingManagers] = useState(false);
 
   const validateForm = () => {
@@ -80,7 +82,7 @@ const NewEmpRegister = () => {
   const handleFormChange = (field: string, value: string) => {
     setFormData((prev) => {
       const newFormData = { ...prev, [field]: value };
-      
+
       return newFormData;
     });
 
@@ -132,7 +134,9 @@ const NewEmpRegister = () => {
       try {
         const res = await GetDepartment_API();
         if (res.success) {
-          setManagers(res.data);
+          console.log(res.data)
+          setManagers(res.data)
+          setManagers((prev) =>[ ...prev, {id:"",name:"manager"}]);
         }
       } catch (error) {
         console.log(error);
