@@ -30,9 +30,9 @@ class LeaveRequestService {
     id: string,
     updateData: Partial<LeaveRequestDTO>
   ): Promise<ILeaveRequest | null> {
-    const reqs = await leaveRequestRepository.update(id,updateData);
-    if(reqs) return null
-    return reqs;
+    const updatedRequest = await leaveRequestRepository.update(id, updateData);
+
+    return updatedRequest;
   }
 }
 
